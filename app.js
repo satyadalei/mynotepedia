@@ -27,9 +27,6 @@ app.use(session({
 // this helps to read json data(that are being sent through req.body) in node.js server // u need to include content-type : application/json in header of the request url
 app.use(express.json());
 
-app.get("/",(req,res)=>{
-    res.red
-})
 app.use('/api/auth', require('./routes/authRoute')); // all requests related to api/auth will be redirected to authRoute
 app.use('/api/notes', require('./routes/notesRoute')); // all requests related to api/notes will be redirected to notesRoute
 

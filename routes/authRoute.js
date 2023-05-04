@@ -57,11 +57,6 @@ router.post("/login",[
                 //password matched now authenticate to user
                 req.session.isAuthenticated = true;
                 req.session.userId = foundUser._id;
-                // const {name,email,_id} = foundUser; 
-                // res.send({name,email,_id});
-                // console.log(req);
-                 //console.log(res);
-                // res.send({redirect: "/getuser"});
                 res.redirect("/getuser");
                 //it may actually redirecting but not showing in thunder client
             }else{
