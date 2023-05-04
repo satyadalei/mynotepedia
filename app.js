@@ -30,6 +30,21 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/authRoute')); // all requests related to api/auth will be redirected to authRoute
 app.use('/api/notes', require('./routes/notesRoute')); // all requests related to api/notes will be redirected to notesRoute
 
+//if user requests to an undefined route
+app.use((req, res, next) => {
+       const msg = "Sorry, the requested route was not found." ;
+        const success = false;
+        const error = "invalid request route"
+        res.status(404).json({
+            "msg" : msg,
+            "success" : success,
+            "error" : error
+        });
+});
+
+  
+  
+
 const port = 7000 || process.env.PORT ;
 app.listen(port, ()=>{
     console.log(`Server started running at ${port}. Have a good day.`);
