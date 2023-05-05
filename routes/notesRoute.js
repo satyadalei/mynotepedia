@@ -134,36 +134,36 @@ router.put("/updatenote/:noteId",checkValidObjectId,checkAuthStatus,[
    //first find that note exist or not
   try {
     const findThatNote = await Note.findById(noteId).exec();
-    if (!findThatNote) {
-        // note does not found
+    if (findThatNote) {
+         // note found -- check whether that note belongs to user
+         if (findThatNote.userId != userId ) {
+            const msg = "not authorised to delete note";
+            const success = false;
+            res.json({
+                "msg" : msg,
+                "success" : success,
+            });
+        }else{
+        // belongs to user now update note
+            const {title,description} = req.body;
+            const lastModified = new Date;
+            const updatedNote = await Note.updateOne({_id:noteId},{title,description,lastModified});
+            const msg = "note updated successfully";
+            const success = true;
+            res.json({
+                "msg" : msg,
+                "success" : success,
+                "updated note" : updatedNote
+            });
+        }
+       }else{
+           // note does not found
           const msg = "note not found";
           const success = false;
           res.json({
               "msg" : msg,
               "success" : success,
           });
-       }else{
-            // note found -- check whether that note belongs to user
-            if (findThatNote.userId != userId ) {
-                const msg = "not authorised to delete note";
-                const success = false;
-                res.json({
-                    "msg" : msg,
-                    "success" : success,
-                });
-            }else{
-            // belongs to user now update note
-               const {title,description} = req.body;
-               const lastModified = new Date;
-               const updatedNote = await Note.updateOne({_id:noteId},{title,description,lastModified});
-                const msg = "note updated successfully";
-                const success = true;
-                res.json({
-                    "msg" : msg,
-                    "success" : success,
-                    "updated note" : updatedNote
-                });
-            }
        }
   } catch (error) {
     console.log(error);
