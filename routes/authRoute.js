@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/userModel');
 const {validationResult, body }= require('express-validator');
-const checkAuthentication = require('../middlewares/checkauthentication');
+const checkAuthSatus = require('../middlewares/checkauthentication');
 
-router.post("/creatuser",[
+router.post("/createuser",[
     body('name', "Enter a valid name").isLength({min:3}),
     body('email', "Enter a valid email").isEmail(),
     body('password', "Enter password atleast 5 characters").notEmpty().isLength({min:5})
@@ -37,7 +37,9 @@ router.post("/creatuser",[
        }
     } 
 });
-
+router.get("/login",(req,res)=>{
+    res.send("You are in login route");
+});
 router.post("/login",[
     body('email', "Enter a valid email").isEmail(),
     body('password', "Enter password atleast 5 characters").notEmpty()
@@ -57,7 +59,8 @@ router.post("/login",[
                 //password matched now authenticate to user
                 req.session.isAuthenticated = true;
                 req.session.userId = foundUser._id;
-                res.redirect("/getuser");
+                // res.redirect("/api/auth/getuser"); // not redirecting in thunder client(vs code)
+                res.send("USer loged in successfully")
                 //it may actually redirecting but not showing in thunder client
             }else{
                 res.send("Incorrect password. Please try again.");
@@ -69,7 +72,7 @@ router.post("/login",[
         res.send("There is some internal server error");
     }
 });
-router.get("/getuser",checkAuthentication,async (req,res)=>{
+router.get("/getuser",checkAuthSatus,async (req,res)=>{
     //user is already authenticated in the middleware no need to check again
     const findUser = await User.findById(req.session.userId).select("-password");
     res.send(findUser);

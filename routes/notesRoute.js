@@ -8,7 +8,7 @@ const checkValidObjectId = require('../middlewares/checkvalidityofobjectid');
 router.get("/fetchallnotes",checkAuthStatus,async(req,res)=>{
     const userId = req.session.userId;
     try {
-        const allNotes = await Note.find({userId : userId });
+        const allNotes = await Note.find({userId : userId});
         const msg = "All notes found";
         const success = true;
         res.json({
