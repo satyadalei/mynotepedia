@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require("cors");
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
@@ -11,6 +12,10 @@ const connectToMongoDB = require('./db'); // requre mongo db connection function
 connectToMongoDB(); // call mongoDb connect function
 // mongoose.connect('mongodb://127.0.0.1:27017/keeper');
 const app = express(); 
+app.use(cors({
+  origin: 'http://localhost:3000', // here will be domain name -- http://myservice.com
+  credentials:  true
+}));
 app.use(bodyParser.urlencoded({ extended: true }));
 //create store to save session details in DB
 const store = new MongoStore({

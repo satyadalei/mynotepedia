@@ -14,7 +14,7 @@ router.get("/fetchallnotes",checkAuthStatus,async(req,res)=>{
         res.json({
             "msg" : msg,
             "success" : success,
-            "found notes" : allNotes
+            "foundNotes" : allNotes
         });
     } catch (error) {
         const msg = "internal server error";
@@ -48,12 +48,12 @@ router.post("/addnote",checkAuthStatus,[
     try {
          const newNote = new Note({userId,title,description});
          await newNote.save();
-         const msg = "note saved successfully";
+         const msg = "note saved";
          const success = true;
          res.json({
              "msg" : msg,
              "success" : success,
-             "saved note" : newNote
+             "savedNote" : newNote
          });
     } catch (error) {
         console.log(error);
