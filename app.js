@@ -13,7 +13,7 @@ connectToMongoDB(); // call mongoDb connect function
 const app = express(); 
 app.use(cors({
 //   origin: process.env.ORIGIN_SITE, // here will be domain name -- http://myservice.com
-    origin: "https://64580e3e8f69eb26ee488421--extraordinary-biscochitos-4d29cd.netlify.app", // here will be domain name -- http://myservice.com
+    origin: "https://mynotepedia.netlify.app/", // here will be domain name -- http://myservice.com
   credentials:  true
 }));
 app.use(bodyParser.urlencoded({ extended: true }));
