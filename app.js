@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const cors = require("cors");
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-const mongoose = require('mongoose');
 const connectToMongoDB = require('./db'); // requre mongo db connection function to connect to mongo DB
 
 
@@ -20,18 +19,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //create store to save session details in DB
 const store = new MongoStore({
     mongoUrl:process.env.mongoDBUrl,
-    collection: 'sessions',
+    collection: process.env.SESSION_COLLECTION_NAME,
 });
 app.use(session({
     secret: process.env.sessionSecret,
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 604800000 }, //one week
+    cookie: { maxAge: process.env.SESSION_MAX_AGE}, //one week
     store: store
 }));
 // this helps to read json data(that are being sent through req.body) in node.js server // u need to include content-type : application/json in header of the request url
 app.use(express.json());
-
+app.get("/",(req,res)=>{
+    res.json({"do":"SMILE","start":"Developing something great & keep :) :)"})
+})
 app.use('/api/auth', require('./routes/authRoute')); // all requests related to api/auth will be redirected to authRoute
 app.use('/api/notes', require('./routes/notesRoute')); // all requests related to api/notes will be redirected to notesRoute
 
@@ -50,7 +51,7 @@ app.use('/api/notes', require('./routes/notesRoute')); // all requests related t
   
   
 
-const port = 7000 || process.env.PORT ;
+const port = process.env.PORT || 7000 ;
 app.listen(port, ()=>{
     console.log(`Server started running at ${port}. Have a good day.`);
 })
