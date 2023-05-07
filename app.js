@@ -25,7 +25,7 @@ app.use(session({
     secret: process.env.sessionSecret,
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: process.env.SESSION_MAX_AGE}, //one week
+    cookie: { maxAge: 604800000}, //one week
     store: store
 }));
 // this helps to read json data(that are being sent through req.body) in node.js server // u need to include content-type : application/json in header of the request url
