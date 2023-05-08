@@ -16,6 +16,7 @@ app.use(cors({
     origin: "https://mynotepedia.netlify.app", // here will be domain name -- http://myservice.com
   credentials:  true
 }));
+app.set("trust proxy",1);
 app.use(bodyParser.urlencoded({ extended: true }));
 //create store to save session details in DB
 const store = new MongoStore({
@@ -26,7 +27,7 @@ app.use(session({
     secret: process.env.sessionSecret,
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 604800000,sameSite: 'none',Secure : true}, //one week
+    cookie: { maxAge: 604800000,sameSite: 'none',secure : true}, //one week
     store: store
 }));
 // this helps to read json data(that are being sent through req.body) in node.js server // u need to include content-type : application/json in header of the request url
